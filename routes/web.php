@@ -11,43 +11,59 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-////
-////Route::get('/hello', function () {
-////    $tasks = [
-////        '1.Проснуться',
-////        '2.Подтянуться',
-////        '3.Умыться',
-////        '4.Побриться'
-////    ];
-////    return view('hello', compact('tasks'))->with('name', 'Alex');
-////});
-//Route::get('/tasks', 'TasksController@index');
-//
-//Route::get('/tasks/{task}', 'TasksController@show');
 
-Route::get('/form', function()
+Route::get('/coordinates', function ()
 {
     return view('form');
 });
-/*
-Route::get('/page', function ()
+
+
+//Route::get('/form', function()
+//{
+//    return view('form');
+//});
+//
+//
+//Route::get('/page/{id}/{name}', function ($id,$name)
+//{
+//
+//    echo 'id = '.$id.' | '.'name = '.$name;
+//    return;
+//})/*->where(['id'=>'[0-9]+', 'name'=>'[A-Za-z]+'])*/; //пример фильтрации параметров
+//
+//
+//// ниже приведен пример группировки роутов
+//
+//Route::group(['prefix'=>'admin/{id}'], function ()
+//{
+//   Route::get('page/create', function()
+//   {
+//      return redirect()->route('article', array('id' => 25)); // пример редирректа на другой роут
+//   });
+//   Route::get('page/edit', function()
+//   {
+//      echo 'page/edit';
+//   });
+//});
+//
+//Route::get('/article/{id}', ['as'=>'article', function ($id) // собственно роут на который уходит редиреккт
+//{
+//    echo $id;
+//}]);
+
+//Route::get('/article/{page}',['uses'=>'YandexWeatherController@getArticle', 'as'=>'article'])
+//    ->middleware('mymiddle');
+
+
+Route::get('/', ['as'=>'home', 'uses'=>'Admin\IndexController@show']);
+
+Route::get('/article/{id}',['uses'=>'Admin\IndexController@getArticle', 'as'=>'article']);
+
+Route::get('/info', ['uses'=>'Admin\IndexController@getInfo', 'as'=>'info']);
+
+Route::group(['prefix'=>'/weather'], function ()
 {
-   echo '<pre>';
-   //print_r($_ENV);
-   echo config('app.locale');
-   echo '<pre>';
-   return;
-});*/
+    Route::get('yandex/{lat}/{lon}','YandexWeatherController@getYandexWeather');
 
-//Route::post('/comments', "FormController@create");
-
-
-
-Route::any('/comments', function()
-{
-    print_r($_POST);
-}
-);
+    Route::get('openweather/{lat}/{lon}','OpenWeatherController@getOpenWeather');
+});
