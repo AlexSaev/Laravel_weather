@@ -6,11 +6,10 @@
     <meta name="" content="">
 </head>
 <body>
-<?php
-
-use App\Controllers;
-$
-;
-?>
+<div class="container">
+    @foreach($weathers as $weather)
+        {{$weather->city}}
+        @endforeach
+</div>
 </body>
 </html>

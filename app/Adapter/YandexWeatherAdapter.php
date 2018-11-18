@@ -3,6 +3,7 @@
 namespace App\Adapter;
 
 use App\Client\YandexWeatherClient;
+use App\Translator\YandexTranslator;
 
 class YandexWeatherAdapter
 {
@@ -18,6 +19,6 @@ class YandexWeatherAdapter
 
     public function getYandexWeather($lat, $lon)
     {
-       return $this->yandexWeatherClient->getYandexWeather($lat, $lon);
+       return  YandexTranslator::parseData($this->yandexWeatherClient->getYandexWeather($lat, $lon));
     }
 }

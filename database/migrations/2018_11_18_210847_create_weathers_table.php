@@ -15,6 +15,13 @@ class CreateWeathersTable extends Migration
     {
         Schema::create('weathers', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('api', 15);
+            $table->float('lat');
+            $table->float('lon');
+            $table->string('city', 50);
+            $table->string('weather_type', 50);
+            $table->float('temperature');
+            $table->float('wind_speed');
             $table->timestamps();
         });
     }

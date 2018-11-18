@@ -12,9 +12,9 @@ class OpenWeatherClient
         $client = new Client();
         $response = $client->get($url);
 
-        $data = json_decode($response->getBody(), true);
+//        $data = json_decode($response->getBody(), true);
 
-        return $data;
+        return $response;
 
     }
 }

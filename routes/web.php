@@ -55,7 +55,7 @@ Route::get('/coordinates', function ()
 //    ->middleware('mymiddle');
 
 
-Route::get('/', ['as'=>'home', 'uses'=>'Admin\IndexController@show']);
+Route::get('/', ['as'=>'home', 'uses'=>'CoreController@show']);
 
 Route::get('/article/{id}',['uses'=>'Admin\IndexController@getArticle', 'as'=>'article']);
 
@@ -63,7 +63,9 @@ Route::get('/info', ['uses'=>'Admin\IndexController@getInfo', 'as'=>'info']);
 
 Route::group(['prefix'=>'/weather'], function ()
 {
-    Route::get('yandex/{lat}/{lon}','YandexWeatherController@getYandexWeather');
+    Route::get('yandex/{cityName}/{lat}/{lon}','YandexWeatherController@setYandexWeather');
 
-    Route::get('openweather/{lat}/{lon}','OpenWeatherController@getOpenWeather');
+    Route::get('openweather/{cityName}/{lat}/{lon}','OpenWeatherController@setOpenWeather');
 });
+
+Route::get('/weathers', 'CoreController@showWeather');

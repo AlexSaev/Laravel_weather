@@ -13,7 +13,6 @@ class YandexWeatherClient
 //     */
     public function getYandexWeather($lat, $lon)
     {
-//        lon] => 33.52 [lat] => 44.61
         $client = new Client();
 
         $options =
@@ -26,9 +25,11 @@ class YandexWeatherClient
                     ]
             ];
 
-        $res = $client->request('GET',"https://api.weather.yandex.ru/v1/informers?lat={$lat}&lon={$lon}", $options);
-        $data = json_decode((string)$res->getBody(),true);
+        $response = $client->request('GET',"https://api.weather.yandex.ru/v1/informers?lat={$lat}&lon={$lon}", $options);
+//        $data = json_decode((string)$response->getBody(),true);
 
-        return $data;
+//        return $data;
+
+        return $response;
     }
 }

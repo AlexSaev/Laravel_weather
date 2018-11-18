@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Adapter\OpenWeatherAdapter;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\DB;
 
 class OpenWeatherController extends Controller
 {
@@ -20,13 +20,17 @@ class OpenWeatherController extends Controller
         $this->openWeatherAdapter = $openWeatherAdapter;
     }
 
-
-    public function getOpenWeather($lat, $lon)
+    /**
+     * @param float $lon
+     * @param float $lat
+     * @param string $cityName
+     */
+    public function setOpenWeather($lat, $lon, $cityName)
     {
         $data = $this->openWeatherAdapter->getOpenWeather($lat, $lon);
 
-        print_r($data);
-
+        DB::insert('insert into weathers (api, lat, lon, city,
+             weather_type, temperature, wind_speed) values (?, ?, ?, ?, ?, ?, ?)', ['OpenWeather', $lat, $lon,
+            $cityName,$data['weather_type'], $data['temperature'], $data['wind_speed'] ]);
     }
 }
-

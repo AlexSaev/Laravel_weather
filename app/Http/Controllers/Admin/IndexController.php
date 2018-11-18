@@ -12,10 +12,10 @@ class IndexController extends Controller
     public function show()
     {
 
-        if(view()->exists('default.template'))
+        if(view()->exists('default.mainPage'))
         {
-            $data = ['title'=>'Здарова, ёпт!'];
-            return view('default.template', $data);
+            $data = ['title'=>'Здарова'];
+            return view('default.mainPage', $data);
         }
         else
         {
