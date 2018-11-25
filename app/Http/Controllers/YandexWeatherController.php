@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Adapter\YandexWeatherAdapter;
+use App\City;
 use App\Weather;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class YandexWeatherController extends Controller
 {
@@ -21,26 +23,35 @@ class YandexWeatherController extends Controller
         $this->yandexWeatherAdapter = $yandexWeatherAdapter;
     }
 
-    /**
-     * @param float $lon
-     * @param float $lat
-     * @param string $cityName
-    */
-    public function setYandexWeather($cityName, $lat, $lon)
+    public function setYandexWeather()
     {
-        $data = $this->yandexWeatherAdapter->getYandexWeather($lat, $lon);
+        $input = Input::only('placeName');
 
-        DB::insert('insert into weathers (api, lat, lon, city,
-         weather_type, temperature, wind_speed) values (?, ?, ?, ?, ?, ?, ?)', ['Yandex', $lat, $lon,
-            $cityName,$data['weather_type'], $data['temperature'], $data['wind_speed'] ]);
+        $cityInfo = City::all()->where('city', '=', $input['placeName'])->first();
+        // $cityInfo['city'], $cityInfo['lat'], $cityInfo['lon']
+        $weatherDTO = $this->yandexWeatherAdapter->getYandexWeather($cityInfo->city, $cityInfo->lat, $cityInfo->lon);
+
+//        DB::insert("insert into weathers (api, city,
+//         weather_type, temperature, wind_speed) values (?, ?, ?, ?, ?)", [$weatherDTO->getApi(), $weatherDTO->getCity(), $weatherDTO->getWeatherType(),
+//            $weatherDTO->getTemperature(), $weatherDTO->getWindSpeed()]);
+
+        Weather::create(
+            [
+                'api' => $weatherDTO->getApi(),
+                'city' => $weatherDTO->getCity(),
+                'weather_type' => $weatherDTO->getWeatherType(),
+                'temperature' => $weatherDTO->getTemperature(),
+                'wind_speed' => $weatherDTO->getWindSpeed(),
+                'date' => date('Y-m-d H:i:s')
+            ]);
+        return CoreController::showWeather();
     }
     
-    public function getData()
-    {
-        $weather = DB::table('weathers')->get();
-        return $weather;
-//        Weather::all();
-
-    }
-    
+//    public function getData()
+//    {
+//        $weather = DB::table('weathers')->get();
+//        return $weather;
+////        Weather::all();
+//
+//    }
 }

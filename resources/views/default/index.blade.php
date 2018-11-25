@@ -21,62 +21,48 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
-          <li class="nav-item "><a href="#" class="nav-link">Add city</a></li>
-          <li class="nav-item e"><a href="#" class="nav-link" data-toggle="modal" data-target="#exampleModal">Log in</a></li>
+           <li class="nav-item active"><a href="{{route('home')}}" class="nav-link">Home</a></li>
+            <li class="nav-item e"><a href="#" class="nav-link" data-toggle="modal" data-target="#exampleModal">Log in</a></li>
+           <li class="nav-item "><a href="#" class="nav-link" data-toggle="modal" data-target="#exampleModalAddCity">Add city</a></li>
+            <li class="nav-item "><a href="#" class="nav-link" data-toggle="modal" data-target="#exampleModalAddYandexWeather">Yandex.Weather</a></li>
+            <li class="nav-item "><a href="#" class="nav-link" data-toggle="modal" data-target="#exampleModalAddOpenWeather">OpenWeather</a></li>
         </ul>
-        <form action="" class="form-inline my-2 my-lg-0">
-          <input type="text" class="form-control mr-sm-2" placeholder="Search" aria-lable="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0">Search</button>
+        <form method="post" action="{{route('show.weather')}}" class="form-inline my-2 my-lg-0">
+          {{--<input type="text" class="form-control mr-sm-2" placeholder="Search" aria-lable="Search" name="city">--}}
+            <input type="text" class="form-control mr-sm-2" id="cityInput"
+                   placeholder="City" name="city" value="">
+          <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Search</button>
+            {{csrf_field()}}
         </form>
       </div>
     </nav>
-    <h1 class="text-center">РОМА, УЧИИИИСЬ!</h1>
+    <h1 class="text-center">Weather information</h1>
 
     <!-- <table class="table table-striped table-dark"> -->
       <table class="table table-hover text-center table-dark" id="table" data-height="100" data-show-columns="true" data-toggle="table" data-search="true" data-show-export="true" data-pagination="true" data-click-to-select="true" data-toolbar="#toolbar" data-page-size="50" data-show-columns="true">
       <thead>
         <tr>
-          <th scope="col">id</th>
           <th scope="col">Api</th>
           <th scope="col">City</th>
           <th scope="col">Weather</th>
             <th scope="col">Temperature</th>
             <th scope="col">Wind speed</th>
+            <th scope="col">Date</th>
         </tr>
       </thead>
       <tbody>
-      @foreach($weathers as $weather)
-        <tr>
-          <th scope="row">{{$weather->id}}</th>
-          <td>{{$weather->api}}</td>
-          <td>{{$weather->city}}</td>
-          <td>{{$weather->weather_type}}</td>
-          <td>{{$weather->temperature}}</td>
-          <td>{{$weather->wind_speed}}</td>
-        </tr>
-      @endforeach
-        {{--<tr>--}}
-          {{--<th scope="row">1</th>--}}
-          {{--<td>Mark</td>--}}
-          {{--<td>Otto</td>--}}
-          {{--<td>@mdo</td>--}}
-            {{--<td>lupa</td>--}}
-        {{--</tr>--}}
-        {{--<tr>--}}
-          {{--<th scope="row">2</th>--}}
-          {{--<td>Jacob</td>--}}
-          {{--<td>Thornton</td>--}}
-          {{--<td>@fat</td>--}}
-            {{--<td>pupa</td>--}}
-        {{--</tr>--}}
-        {{--<tr>--}}
-          {{--<th scope="row">3</th>--}}
-          {{--<td>Larry</td>--}}
-          {{--<td>the Bird</td>--}}
-          {{--<td>@twitter</td>--}}
-            {{--<td>biba</td>--}}
-        {{--</tr>--}}
+      @if($weathers != NULL)
+          @foreach($weathers as $weather)
+            <tr>
+              <td>{{$weather->api}}</td>
+              <td>{{$weather->city}}</td>
+              <td>{{$weather->weather_type}}</td>
+              <td>{{$weather->temperature}}</td>
+              <td>{{$weather->wind_speed}}</td>
+                <td>{{$weather->date}}</td>
+            </tr>
+          @endforeach
+          @endif
       </tbody>
     </table>
     
@@ -102,13 +88,14 @@
                   <lable for="exampleInputEmail">Password</lable>
                   <input type="password" class="form-control" id="exampleInputPass" placeholder="Password" required>
                   <small id="passHelp" class="form-text text-muted">Enter your Password</small>
+                </div>
               </form>
             </div>
           </div>
           <div class="form-check">
             <lable class="form-check-lable">
-              <input type="checkbox" class="form-check-input">
-              Remember me
+              <input type="checkbox" class="form-check-input ml-1">
+                <p class="ml-1">R Remember me</p>
             </lable>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Registration</button>
@@ -118,6 +105,111 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="modal fade" id="exampleModalAddCity" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add new city info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form method="post" action="{{route('set.city')}}">
+                            <div class="form-group">
+                                <lable for="exampleInputCity">City</lable>
+                                <input type="text" class="form-control" id="exampleInputCity" aria-descripbdby="cityHelp"
+                                       placeholder="City" name="cityName" value="">
+                                <small id="cityHelp" class="form-text text-muted">Enter city name</small>
+                            </div>
+                            <div class="form-group">
+                                <lable for="exampleInputLat">Latitude</lable>
+                                    <input type="text" class="form-control" id="exampleInputLat" placeholder="Latitude" name="lat" value="">
+                                <small id="latHelp" class="form-text text-muted">Enter latitude</small>
+                            </div>
+                            <div class="form-group">
+                                <lable for="exampleInputLon">Longitude</lable>
+                                <input type="text" class="form-control" id="exampleInputLon" placeholder="Longitude" name="lon" value="">
+                                <small id="lonHelp" class="form-text text-muted">Enter longitude</small>
+                            </div>
+                            <div class="form-check">
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Send</button>
+                                </div>
+                                {{csrf_field()}}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModalAddYandexWeather" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Weather from Yandex</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        {{--Спросить можно ли как-то менять ЭКШОН--}}
+                        <form method="post" action="{{route('set.yandex.weather')}}">
+                            <div class="form-group">
+                                <lable for="exampleInputPlace">City</lable>
+                                <input type="text" class="form-control" id="exampleInputPlace" aria-descripbdby="placeHelp"
+                                       placeholder="Place" name="placeName" value="">
+                                <small id="placeHelp" class="form-text text-muted">Enter city name</small>
+                            </div>
+                            <div class="form-check">
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Send</button>
+                                </div>
+                                {{csrf_field()}}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModalAddOpenWeather" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Weather from OpenWeather</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        {{--Спросить можно ли как-то менять ЭКШОН--}}
+                        <form method="post" action="{{route('set.open.weather')}}">
+                            <div class="form-group">
+                                <lable for="exampleInputPlace">City</lable>
+                                <input type="text" class="form-control" id="exampleInputPlace" aria-descripbdby="placeHelp"
+                                       placeholder="Place" name="placeName" value="">
+                                <small id="placeHelp" class="form-text text-muted">Enter city name</small>
+                            </div>
+                            <div class="form-check">
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Send</button>
+                                </div>
+                                {{csrf_field()}}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 

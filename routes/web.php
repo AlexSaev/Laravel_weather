@@ -55,17 +55,23 @@ Route::get('/coordinates', function ()
 //    ->middleware('mymiddle');
 
 
-Route::get('/', ['as'=>'home', 'uses'=>'CoreController@show']);
+//Route::get('/', ['as'=>'home', 'uses'=>'CoreController@show']);
 
-Route::get('/article/{id}',['uses'=>'Admin\IndexController@getArticle', 'as'=>'article']);
 
-Route::get('/info', ['uses'=>'Admin\IndexController@getInfo', 'as'=>'info']);
 
-Route::group(['prefix'=>'/weather'], function ()
-{
-    Route::get('yandex/{cityName}/{lat}/{lon}','YandexWeatherController@setYandexWeather');
 
-    Route::get('openweather/{cityName}/{lat}/{lon}','OpenWeatherController@setOpenWeather');
-});
 
-Route::get('/weathers', 'CoreController@showWeather');
+//Route::group(['prefix'=>'/weather'], function ()
+//{
+//    Route::get('yandex/{cityName}/{lat}/{lon}','YandexWeatherController@setYandexWeather');
+//
+//    Route::get('openweather/{cityName}/{lat}/{lon}','OpenWeatherController@setOpenWeather'); OpenWeatherController@setOpenWeather
+//});   !!!!!!!!!!!
+
+Route::post('/showCityWeather', 'CoreController@showCityWeather')->name('show.weather');
+
+Route::get('/', 'CoreController@showWeather')->name('home');
+Route::post('/setYandexWeatherInfo', 'YandexWeatherController@setYandexWeather')->name('set.yandex.weather');
+
+Route::post('/setOpenWeatherInfo', 'OpenWeatherController@setOpenWeather')->name('set.open.weather');
+Route::post('/setCityInfo', 'CityController@setCityInfo')->name('set.city');

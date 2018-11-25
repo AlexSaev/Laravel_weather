@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Adapter\OpenWeatherAdapter;
+use App\City;
+use App\Weather;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
+
 
 class OpenWeatherController extends Controller
 {
@@ -20,17 +24,30 @@ class OpenWeatherController extends Controller
         $this->openWeatherAdapter = $openWeatherAdapter;
     }
 
-    /**
-     * @param float $lon
-     * @param float $lat
-     * @param string $cityName
-     */
-    public function setOpenWeather($lat, $lon, $cityName)
+    public function setOpenWeather()
     {
-        $data = $this->openWeatherAdapter->getOpenWeather($lat, $lon);
+        $input = Input::only('placeName');
 
-        DB::insert('insert into weathers (api, lat, lon, city,
-             weather_type, temperature, wind_speed) values (?, ?, ?, ?, ?, ?, ?)', ['OpenWeather', $lat, $lon,
-            $cityName,$data['weather_type'], $data['temperature'], $data['wind_speed'] ]);
+        $cityInfo = City::all()->where('city', '=', $input['placeName'])->first();
+        // $cityInfo['city'], $cityInfo['lat'], $cityInfo['lon']
+        $weatherDTO = $this->openWeatherAdapter->getOpenWeather($cityInfo->city, $cityInfo->lat, $cityInfo->lon);
+
+
+//            DB::insert('insert into weathers (api, lat, lon, city,
+//            weather_type, temperature, wind_speed) values (?, ?, ?, ?, ?, ?, ?)', ['OpenWeather', $lat, $lon,
+//            $cityName,$data['weather_type'], $data['temperature'], $data['wind_speed'] ]);
+
+        Weather::create(
+            [
+                'api' => $weatherDTO->getApi(),
+                'city' => $weatherDTO->getCity(),
+                'weather_type' => $weatherDTO->getWeatherType(),
+                'temperature' => $weatherDTO->getTemperature(),
+                'wind_speed' => $weatherDTO->getWindSpeed(),
+                'date' => date('Y-m-d H:i:s')
+            ]);
+
+        return CoreController::showWeather();
+
     }
 }
