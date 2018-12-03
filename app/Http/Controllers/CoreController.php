@@ -24,7 +24,7 @@ class CoreController extends Controller
 
     public static function showWeather()
     {
-        $weathers = DB::table('weathers')->paginate(10);
+        $weathers = Weather::all();
         return view('default.index', ['weathers' => $weathers]);
     }
 

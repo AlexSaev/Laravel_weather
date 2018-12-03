@@ -28,8 +28,8 @@ return [
     | the Mailgun mail service which will provide reliable deliveries.
     |
     */
-
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    // было так 'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -41,7 +41,7 @@ return [
     | stay compatible with the Mailgun e-mail application by default.
     |
     */
-
+    // было так 'port' => env('MAIL_PORT', 587),
     'port' => env('MAIL_PORT', 587),
 
     /*
@@ -54,10 +54,13 @@ return [
     | used globally for all e-mails that are sent by your application.
     |
     */
-
+    // было так 'from' => [
+    //        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+    //        'name' => env('MAIL_FROM_NAME', 'Example'),
+    //    ],
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'saleksandr19121998@gmail.com'),
+        'name' => env('MAIL_FROM_NAME', 'Laravel_project'),
     ],
 
     /*

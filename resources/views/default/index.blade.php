@@ -21,7 +21,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-           <li class="nav-item active"><a href="{{route('home')}}" class="nav-link">Home</a></li>
+           <li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
             <li class="nav-item e"><a href="#" class="nav-link" data-toggle="modal" data-target="#exampleModal">Log in</a></li>
            <li class="nav-item "><a href="#" class="nav-link" data-toggle="modal" data-target="#exampleModalAddCity">Add city</a></li>
             <li class="nav-item "><a href="#" class="nav-link" data-toggle="modal" data-target="#exampleModalAddYandexWeather">Yandex.Weather</a></li>

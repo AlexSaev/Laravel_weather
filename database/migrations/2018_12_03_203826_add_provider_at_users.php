@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDateColumn2 extends Migration
+class AddProviderAtUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class AddDateColumn2 extends Migration
      */
     public function up()
     {
-        Schema::table('weathers', function (Blueprint $table) {
-            // Артизан не захотел добавлять колонку даты
-                    $table->dateTime('date');
-
+        Schema::table('users', function (Blueprint $table)
+        {
+            $table->string('provider')->after('password');
+            $table->string('provider_id')->after('provider');
         });
     }
 
