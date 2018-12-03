@@ -12,6 +12,11 @@
 */
 Auth::routes(['verify' => true]);
 
+Route::get('/', function ()
+{
+   return view('hello');
+});
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/showCityWeather', 'CoreController@showCityWeather')->name('show.weather');
@@ -27,3 +32,9 @@ Route::post('/setCityInfo', 'CityController@setCityInfo')->name('set.city');
 //    Route::get('/',['middleware' => 'auth', 'uses' => 'CoreController@showWeather', 'as' => 'weather']);
 //});
 Route::get('/weather',['middleware' => ['verified'], 'uses' => 'CoreController@showWeather', 'as' => 'weather']);
+
+//Route::get('auth/{provider}', 'Auth\ProvidersController@redirectToProvider');
+//Route::get('auth/{provider}/callback', 'Auth\ProvidersController@handleProviderCallback');
+
+Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
+Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
