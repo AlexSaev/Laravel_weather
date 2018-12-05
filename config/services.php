@@ -46,7 +46,7 @@ return [
         'redirect'      => env('FACEBOOK_URL'),
     ],
 
-    'vk' => [
+    'vkontakte' => [
         'client_id'     => env('VK_ID'),
         'client_secret' => env('VK_SECRET'),
         'redirect'      => env('VK_URL'),

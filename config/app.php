@@ -164,7 +164,8 @@ return [
          * Package Service Providers...
          */
         // этот провайдер от авторизации через соцсети
-        Laravel\Socialite\SocialiteServiceProvider::class,
+        \SocialiteProviders\Manager\ServiceProvider::class,
+
 
         /*
          * Application Service Providers...

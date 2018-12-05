@@ -41,13 +41,13 @@ class LoginController extends Controller
     }
 
     /**
-     * Redirect the user to the GitHub authentication page.
      *
      * @return \Illuminate\Http\Response
      */
-    public function redirectToProvider()
+    public function redirectToProvider($provider)
     {
-        return Socialite::driver('github')->redirect();
+//        return Socialite::with($provider)->redirect();
+        return Socialite::with($provider)->redirect();
     }
 
     /**
@@ -58,22 +58,11 @@ class LoginController extends Controller
     // Так, потом нужно убрать весь этот хардкод к чертовой матери.
     public function handleProviderCallback($provider)
     {
-        $user = Socialite::driver($provider)->user();
-
-//        // add user to database
-//        $user = User::create([
-//            'email' => $githubUser->getEmail(),
-//            'name' => $githubUser->getName(),
-//            'provider_id' => $githubUser->getId(),
-//            'provider' => "github"
-//        ]);
-
-        // login the user
+        $user = Socialite::with($provider)->user();
         $authUser = $this->findOrCreateUser($user, $provider);
-        Auth::login($authUser, true);
+        Auth::login($authUser);
 
         return redirect($this->redirectTo);
-        // $user->token;
     }
 
     public function findOrCreateUser($user, $provider)
@@ -82,11 +71,24 @@ class LoginController extends Controller
         if ($authUser) {
             return $authUser;
         }
-        return User::create([
-            'email' => $user->getEmail(),
-            'name' => $user->getName(),
-            'provider_id' => $user->getId(),
-            'provider' => "github"
-        ]);
+        if ($provider == 'vkontakte')
+        {
+            return User::create([
+                'email' => $user->accessTokenResponseBody['email'],
+                'name' => $user->getName(),
+                'provider_id' => $user->getId(),
+                'provider' => $provider,
+            ]);
+        }
+        elseif ($provider == 'github')
+        {
+            return User::create([
+                'email' => $user->getEmail(),
+                'name' => $user->getName(),
+                'provider_id' => $user->getId(),
+                'provider' => $provider,
+            ]);
+        }
+
     }
 }
