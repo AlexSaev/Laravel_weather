@@ -27,6 +27,10 @@
             <li class="nav-item "><a href="#" class="nav-link" data-toggle="modal" data-target="#exampleModalAddYandexWeather">Yandex.Weather</a></li>
             <li class="nav-item "><a href="#" class="nav-link" data-toggle="modal" data-target="#exampleModalAddOpenWeather">OpenWeather</a></li>
         </ul>
+          <form method="post" action="{{route('make.post')}}">
+              <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Make Post</button>
+              {{csrf_field()}}
+          </form>
         <form method="post" action="{{route('show.weather')}}" class="form-inline my-2 my-lg-0">
           {{--<input type="text" class="form-control mr-sm-2" placeholder="Search" aria-lable="Search" name="city">--}}
             <input type="text" class="form-control mr-sm-2" id="cityInput"

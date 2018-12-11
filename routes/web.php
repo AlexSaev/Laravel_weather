@@ -33,8 +33,7 @@ Route::post('/setCityInfo', 'CityController@setCityInfo')->name('set.city');
 //});
 Route::get('/weather',['middleware' => ['verified'], 'uses' => 'CoreController@showWeather', 'as' => 'weather']);
 
-//Route::get('auth/{provider}', 'Auth\ProvidersController@redirectToProvider');
-//Route::get('auth/{provider}/callback', 'Auth\ProvidersController@handleProviderCallback');
-
 Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
 Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
+
+Route::post('/makeWallPost', 'CoreController@makeWallPost')->name('make.post');
